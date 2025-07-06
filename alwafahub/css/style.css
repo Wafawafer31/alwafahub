@@ -1,0 +1,246 @@
+/* Global */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0f0f0f;
+  color: #ffffff;
+}
+
+a {
+  color: #e4c07b;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #1a1a1a;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #e4c07b;
+  letter-spacing: 1px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: #ffffff;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #e4c07b;
+}
+
+/* Hero Section */
+.hero {
+  height: 70vh;
+  background-image: url('../images/hero-min5.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.hero-text {
+  position: relative;
+  color: #fff;
+  z-index: 2;
+}
+
+.hero-text h1 {
+  font-size: 48px;
+  color: #e4c07b;
+}
+
+.hero-text p {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+/* Client Gallery */
+.clients {
+  padding: 60px 40px;
+  background-color: #121212;
+  text-align: center;
+}
+
+.clients h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #e4c07b;
+}
+
+.client-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.client-card {
+  background-color: #1f1f1f;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.3s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.client-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+.client-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.client-card h3 {
+  padding: 15px;
+  font-size: 18px;
+  color: #ffffff;
+  background-color: #2a2a2a;
+  margin: 0;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #1a1a1a;
+  color: #777;
+  font-size: 14px;
+}
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  header {
+    padding: 15px 30px;
+  }
+
+  .hero-text h1 {
+    font-size: 38px;
+  }
+
+  .hero-text p {
+    font-size: 18px;
+  }
+
+  .clients {
+    padding: 50px 30px;
+  }
+
+  .client-card h3 {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .hero {
+    height: 60vh;
+  }
+
+  .hero-text h1 {
+    font-size: 30px;
+  }
+
+  .hero-text p {
+    font-size: 16px;
+  }
+
+  .client-card img {
+    height: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .hero {
+    height: 50vh;
+    padding: 20px;
+  }
+
+  .hero-text h1 {
+    font-size: 24px;
+  }
+
+  .hero-text p {
+    font-size: 14px;
+  }
+
+  .clients h2 {
+    font-size: 24px;
+  }
+
+  .client-card h3 {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  footer {
+    font-size: 12px;
+    padding: 15px;
+  }
+}
+.dashboard-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.dashboard-buttons .btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #fff;
+  background: #444;
+  transition: 0.3s;
+}
+
+.dashboard-buttons .btn:hover {
+  opacity: 0.8;
+}
