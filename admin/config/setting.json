@@ -1,0 +1,12 @@
+{
+  "ftp_enabled": true,
+  "drive_sync_enabled": true,
+  "drive_folder_watch_interval": 15,
+  "thumb_refresh_interval": 10,
+  "default_layout": "default-layout.json",
+  "default_frame": "default-frame.png",
+  "max_thumb_per_page": 50,
+  "time_filter_enabled": true,
+  "auto_generate_collage": false,
+  "admin_theme": "dark"
+}
