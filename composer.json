@@ -1,0 +1,20 @@
+{
+  "name": "alwafahub/core-system",
+  "description": "Sistem modular untuk layanan digital AlwafaHub: kolase foto, sinkronisasi cloud, dan otomasi klien.",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "google/apiclient": "^2.13",
+    "ext-gd": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lib\\": "lib/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "minimum-stability": "stable"
+}
