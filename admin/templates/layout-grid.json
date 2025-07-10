@@ -1,0 +1,35 @@
+{
+  "layout_id": "layout-grid",
+  "canvas": {
+    "width": 1200,
+    "height": 800
+  },
+  "slots": [
+    {
+      "x": 50,
+      "y": 50,
+      "width": 500,
+      "height": 350
+    },
+    {
+      "x": 650,
+      "y": 50,
+      "width": 500,
+      "height": 350
+    },
+    {
+      "x": 50,
+      "y": 420,
+      "width": 500,
+      "height": 350
+    },
+    {
+      "x": 650,
+      "y": 420,
+      "width": 500,
+      "height": 350
+    }
+  ],
+  "frame": "frame-grid.png",
+  "background_color": "#ffffff"
+}
