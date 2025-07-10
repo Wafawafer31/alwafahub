@@ -1,0 +1,23 @@
+{
+  "layout_id": "layout-portrait",
+  "canvas": {
+    "width": 800,
+    "height": 1200
+  },
+  "slots": [
+    {
+      "x": 150,
+      "y": 100,
+      "width": 500,
+      "height": 450
+    },
+    {
+      "x": 150,
+      "y": 650,
+      "width": 500,
+      "height": 450
+    }
+  ],
+  "frame": "frame-portrait.png",
+  "background_color": "#ffffff"
+}
