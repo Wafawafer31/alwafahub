@@ -1,0 +1,23 @@
+{
+  "layout_id": "layout-classic",
+  "canvas": {
+    "width": 1200,
+    "height": 800
+  },
+  "slots": [
+    {
+      "x": 100,
+      "y": 150,
+      "width": 450,
+      "height": 350
+    },
+    {
+      "x": 650,
+      "y": 150,
+      "width": 450,
+      "height": 350
+    }
+  ],
+  "frame": "frame01.png",
+  "background_color": "#ffffff"
+}
