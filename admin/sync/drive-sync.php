@@ -1,14 +1,15 @@
 <?php
-require_once '../../lib/google-drive-api.php'; // Class handler API
+require_once '../../lib/google-drive-api.php';
 
 $eventId = $_GET['event'] ?? 'default';
 $config = loadEventConfig($eventId);
 $folderId = $config['sync_settings']['drive_folder_id'];
-$localDir = __DIR__ . '/../photos/drive/';
+$localDir = __DIR__ . "/../photos/drive/evt_" . $eventId . "/";
 
-$accessToken = getGoogleAccessToken(); // Fungsi autentikasi OAuth
+if (!is_dir($localDir)) mkdir($localDir, 0777, true);
 
-$files = getDriveFiles($accessToken, $folderId); // Ambil daftar file
+$accessToken = getGoogleAccessToken();
+$files = getDriveFiles($accessToken, $folderId);
 
 foreach ($files as $file) {
     $filename = $file['name'];
@@ -18,7 +19,6 @@ foreach ($files as $file) {
     if (!file_exists($localPath)) {
         $content = downloadDriveFile($accessToken, $fileId);
         file_put_contents($localPath, $content);
-        echo "✅ File baru disimpan: $filename<br>";
+        echo "✅ $filename disimpan ke $eventId<br>";
     }
 }
-?>
