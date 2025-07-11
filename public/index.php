@@ -3,6 +3,10 @@
 
 session_start();
 
+// Error reporting untuk development
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Autoload classes
 spl_autoload_register(function ($class) {
     $paths = [
@@ -20,6 +24,11 @@ spl_autoload_register(function ($class) {
         }
     }
 });
+
+// Load Composer autoloader if exists
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
 
 // Simple routing
 $request = $_SERVER['REQUEST_URI'];
@@ -81,5 +90,7 @@ try {
 } catch (Exception $e) {
     error_log("Application error: " . $e->getMessage());
     http_response_code(500);
-    require_once __DIR__ . '/../resources/views/errors/500.php';
+    echo "<h1>Error 500</h1>";
+    echo "<p>Terjadi kesalahan: " . htmlspecialchars($e->getMessage()) . "</p>";
+    echo "<p>File: " . $e->getFile() . " Line: " . $e->getLine() . "</p>";
 }
