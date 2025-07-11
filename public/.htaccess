@@ -1,0 +1,21 @@
+# AlwafaHub Public - URL Rewriting
+RewriteEngine On
+
+# Handle Angular and other front-end framework routes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Prevent access to sensitive files
+<Files ~ "^\.">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Prevent access to PHP files in uploads
+<Directory "uploads">
+    <Files "*.php">
+        Order allow,deny
+        Deny from all
+    </Files>
+</Directory>

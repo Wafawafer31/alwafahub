@@ -1,20 +1,9 @@
-<?php
-// index.php - Landing Page untuk Event Collage Generator
-
-// Load konfigurasi umum (jika ada)
-require_once __DIR__ . '/lib/db.php'; // opsional, kalau perlu akses DB
-$config = [
-    'judul' => 'Event Collage Generator',
-    'deskripsi' => 'Pilih foto, buat kolase, dan abadikan momen acara dengan mudah.',
-];
-
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <title>AlwafaHub – Kreativitas Digital & Fotografi Event</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="AlwafaHub - Studio kreatif profesional untuk fotografi event, desain grafis, branding, dan solusi digital berkualitas tinggi.">
   <meta name="keywords" content="fotografi event, desain grafis, branding, wedding photography, digital solutions">
@@ -98,7 +87,7 @@ $config = [
   </footer>
 
   <!-- Modal for Gallery -->
-  <div id="imageModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); cursor: pointer;" onclick="closeModal()">
+  <div id="imageModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; background-color: rgba(0,0,0,0.9); cursor: pointer;" onclick="closeModal()">
     <img id="modalImage" style="margin: auto; display: block; max-width: 90%; max-height: 90%; margin-top: 5%;">
   </div>
 

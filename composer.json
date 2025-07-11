@@ -1,20 +1,49 @@
 {
-  "name": "alwafahub/core-system",
-  "description": "Sistem modular untuk layanan digital AlwafaHub: kolase foto, sinkronisasi cloud, dan otomasi klien.",
+  "name": "alwafahub/professional-gallery",
+  "description": "Sistem gallery foto profesional dengan fitur kolase otomatis dan manajemen klien terintegrasi",
   "type": "project",
   "license": "MIT",
+  "version": "2.0.0",
+  "authors": [
+    {
+      "name": "AlwafaHub Team",
+      "email": "info@alwafahub.com"
+    }
+  ],
   "require": {
-    "google/apiclient": "^2.13",
-    "ext-gd": "*"
+    "php": ">=7.4",
+    "ext-gd": "*",
+    "ext-pdo": "*",
+    "ext-json": "*",
+    "google/apiclient": "^2.13"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0"
   },
   "autoload": {
     "psr-4": {
-      "Lib\\": "lib/"
+      "App\\": "app/",
+      "App\\Controllers\\": "app/Controllers/",
+      "App\\Models\\": "app/Models/",
+      "App\\Services\\": "app/Services/",
+      "App\\Libraries\\": "app/Libraries/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "migrate": "php database/migrate.php",
+    "serve": "php -S localhost:8000 -t public/"
   },
   "config": {
     "optimize-autoloader": true,
-    "sort-packages": true
+    "sort-packages": true,
+    "preferred-install": "dist"
   },
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "prefer-stable": true
 }
