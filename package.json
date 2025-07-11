@@ -1,0 +1,130 @@
+{
+  "name": "alwafahub-professional-gallery",
+  "version": "2.0.0",
+  "description": "Sistem gallery foto profesional dengan fitur kolase otomatis dan manajemen klien terintegrasi",
+  "main": "public/index.php",
+  "type": "module",
+  "scripts": {
+    "dev": "php -S localhost:8000 -t public/",
+    "start": "php -S localhost:8080 -t public/",
+    "build": "npm run build:css && npm run build:js && npm run optimize:images",
+    "build:css": "postcss public/assets/css/style.css -o public/assets/css/style.min.css --map",
+    "build:js": "terser public/assets/js/*.js -o public/assets/js/app.min.js --source-map",
+    "optimize:images": "imagemin public/assets/images/* --out-dir=public/assets/images/optimized",
+    "watch": "concurrently \"npm run watch:css\" \"npm run dev\"",
+    "watch:css": "postcss public/assets/css/style.css -o public/assets/css/style.min.css --watch",
+    "lint": "eslint public/assets/js/ --ext .js",
+    "lint:fix": "eslint public/assets/js/ --ext .js --fix",
+    "format": "prettier --write \"public/assets/**/*.{js,css}\"",
+    "test": "echo \"PHP application - use composer test for backend tests\"",
+    "migrate": "php database/migrate.php",
+    "seed": "php database/seed.php",
+    "serve:prod": "php -S 0.0.0.0:8080 -t public/",
+    "deploy:prep": "npm run build && composer install --no-dev --optimize-autoloader",
+    "clean": "rm -rf public/assets/css/*.min.css public/assets/js/*.min.js public/assets/images/optimized/*"
+  },
+  "keywords": [
+    "photography",
+    "gallery",
+    "event-photography",
+    "collage-generator",
+    "php",
+    "mysql",
+    "responsive-design",
+    "wedding-photography",
+    "client-management"
+  ],
+  "author": {
+    "name": "AlwafaHub Team",
+    "email": "info@alwafahub.com",
+    "url": "https://alwafahub.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alwafahub/professional-gallery.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alwafahub/professional-gallery/issues"
+  },
+  "homepage": "https://alwafahub.com",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0",
+    "php": ">=7.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.2",
+    "cssnano": "^6.0.1",
+    "eslint": "^8.52.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-n": "^16.3.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "imagemin": "^8.0.1",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^9.0.2",
+    "imagemin-svgo": "^10.0.1",
+    "postcss": "^8.4.31",
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "^15.1.0",
+    "postcss-nested": "^6.0.1",
+    "prettier": "^3.0.3",
+    "terser": "^5.24.0"
+  },
+  "dependencies": {
+    "alpinejs": "^3.13.2",
+    "axios": "^1.6.0",
+    "lightbox2": "^2.11.4",
+    "sortablejs": "^1.15.0",
+    "sweetalert2": "^11.9.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "postcss": {
+    "plugins": {
+      "postcss-import": {},
+      "postcss-nested": {},
+      "autoprefixer": {},
+      "cssnano": {
+        "preset": "default"
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "standard"
+    ],
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "rules": {
+      "no-console": "warn",
+      "no-unused-vars": "warn"
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5"
+  },
+  "config": {
+    "php_version": "7.4",
+    "mysql_version": "8.0",
+    "upload_max_size": "10M",
+    "memory_limit": "256M"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://alwafahub.com/support"
+  }
+}
