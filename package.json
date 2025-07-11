@@ -5,8 +5,8 @@
   "main": "public/index.php",
   "type": "module",
   "scripts": {
-    "dev": "php -S localhost:8000 -t public/",
-    "start": "php -S localhost:8080 -t public/",
+    "dev": "npx serve public -l 8000",
+    "start": "npx serve public -l 8080",
     "build": "npm run build:css && npm run build:js && npm run optimize:images",
     "build:css": "postcss public/assets/css/style.css -o public/assets/css/style.min.css --map",
     "build:js": "terser public/assets/js/*.js -o public/assets/js/app.min.js --source-map",
@@ -19,7 +19,7 @@
     "test": "echo \"PHP application - use composer test for backend tests\"",
     "migrate": "php database/migrate.php",
     "seed": "php database/seed.php",
-    "serve:prod": "php -S 0.0.0.0:8080 -t public/",
+    "serve:prod": "npx serve public -l 8080",
     "deploy:prep": "npm run build && composer install --no-dev --optimize-autoloader",
     "clean": "rm -rf public/assets/css/*.min.css public/assets/js/*.min.js public/assets/images/optimized/*"
   },
