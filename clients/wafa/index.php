@@ -1,4 +1,3 @@
-
 <?php
 $config = json_decode(file_get_contents(__DIR__ . '/config.json'), true);
 $thumbDir = __DIR__ . '/thumbs/';
@@ -129,10 +128,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
-
     <!-- Gallery Section -->
     <div class="site-section" id="gallery-section">
         <div class="container">
+            <!-- QR Code Event -->
+            <div class="text-center mb-4">
+                <h5>Akses Galeri via QR Code</h5>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=<?= urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ?>" alt="QR Event" />
+                <div class="small text-muted">Scan untuk akses galeri ini</div>
+            </div>
             <!-- Filter Buttons -->
             <div class="filters text-center mb-5" data-aos="fade-up">
                 <ul class="filter-list">
@@ -147,13 +151,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </ul>
             </div>
 
+            <!-- Bulk Download ZIP Button -->
+            <div class="text-center mb-4">
+                <a href="download_zip.php" class="btn btn-outline-primary"><i class="bi bi-file-zip"></i> Download Semua Foto (ZIP)</a>
+            </div>
+
             <!-- Photo Gallery Grid -->
             <div class="photo-gallery" data-aos="fade-up" data-aos-delay="200">
                 <?php foreach ($photoGroups as $timeSlot => $group): ?>
-                    <div class="group-thumb <?= $group['class'] ?>" 
+                    <div class="group-thumb <?= $group['class'] }" 
                          onclick='showPopup(<?= json_encode($group['photos']) ?>, "<?= $timeSlot ?>")'>
                         <div class="group-image">
-                            <img src="thumbs/<?= $group['photos'][0] ?>" alt="<?= $timeSlot ?> Photos">
+                            <img src="thumbs/<?= $group['photos'][0] }" alt="<?= $timeSlot } Photos">
                             <div class="group-overlay">
                                 <i class="bi bi-eye-fill"></i>
                                 <span>Lihat Foto</span>
@@ -171,6 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Collage Section -->
@@ -287,6 +297,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </footer>
 
+    <!-- Popup Modal untuk Preview Foto dan Kolase -->
+    <div id="popup-container" class="photo-modal">
+        <div id="popup-content" class="modal-content">
+            <button class="close-btn" onclick="closePopup()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="modal-header">
+                <h5 id="popup-title">Preview Foto</h5>
+                <div id="popup-number" class="photo-counter">1 / 1</div>
+            </div>
+            <div class="modal-body">
+                <div class="image-container">
+                    <img id="popup-image" src="" alt="Preview">
+                    <div class="image-overlay">
+                        <button class="nav-btn prev-btn" onclick="prevImage()">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="nav-btn next-btn" onclick="nextImage()">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="action-buttons">
+                    <a id="download-link" class="btn btn-primary" download>
+                        <i class="bi bi-download me-2"></i>Download Foto
+                    </a>
+                    <a id="zip-link" class="btn btn-outline-primary" download>
+                        <i class="bi bi-file-zip"></i>Download ZIP
+                    </a>
+                </div>
+                <!-- Selection Area for Photostrip/Collage -->
+                <div class="selection-area mt-4">
+                    <div class="selection-header">
+                        <h6><i class="bi bi-grid-3x3-gap me-2"></i>Pilih 2 Foto untuk Kolase</h6>
+                    </div>
+                    <div id="thumbnail-list" class="thumbnail-grid"></div>
+                    <button class="btn btn-success mt-3" id="make-collage-btn" style="display:none;" onclick="makeCollage()">
+                        <i class="bi bi-magic me-2"></i>Kolase 2 Foto Ini
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal hasil kolase -->
+    <div id="collage-popup-container" class="photo-modal" style="display:none;">
+        <div id="collage-popup-content" class="modal-content">
+            <button class="close-btn" onclick="closeCollagePopup()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <h5>Hasil Kolase</h5>
+            <img id="collage-image" src="" alt="Collage Image" class="img-fluid border rounded shadow">
+            <div class="text-center mt-3">
+                <a id="collage-download-link" class="btn btn-primary" download>Download Kolase</a>
+            </div>
+        </div>
+    </div>
+
     <!-- Photo Popup Modal -->
     <div id="popup-container" class="photo-modal">
         <div id="popup-content" class="modal-content">
@@ -337,7 +406,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <!-- Success Message Toast -->
+    <!-- Success & Error Toast -->
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div id="successToast" class="toast" role="alert">
             <div class="toast-header bg-success text-white">
@@ -347,6 +416,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="toast-body" id="toastMessage">
                 Operasi berhasil dilakukan.
+            </div>
+        </div>
+        <div id="errorToast" class="toast" role="alert">
+            <div class="toast-header bg-danger text-white">
+                <i class="bi bi-x-circle-fill me-2"></i>
+                <strong class="me-auto">Gagal!</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="errorMessage">
+                Terjadi kesalahan.
             </div>
         </div>
     </div>
@@ -559,8 +638,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Show error message
         function showErrorMessage(message) {
-            // You can implement error toast similar to success toast
-            alert(message); // Temporary solution
+            document.getElementById('errorMessage').textContent = message;
+            const toast = new bootstrap.Toast(document.getElementById('errorToast'));
+            toast.show();
         }
 
         // Keyboard navigation
@@ -607,6 +687,269 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 navbar.classList.remove('scrolled');
             }
         });
+
+        // Integrasi script deobfuscasi photostrip/kolase
+        let currentGroup = [];
+        let currentIndex = 0;
+        let selectedForCollage = [];
+        let lastHash = null;
+
+        function showPopup(group) {
+            currentGroup = group;
+            currentIndex = 0;
+            updatePopupImage();
+            document.getElementById('popup-container').style.display = 'flex';
+        }
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % currentGroup.length;
+            updatePopupImage();
+        }
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + currentGroup.length) % currentGroup.length;
+            updatePopupImage();
+        }
+        function closePopup() {
+            document.getElementById('popup-container').style.display = 'none';
+        }
+        async function checkForUpdates() {
+            try {
+                const response = await fetch('api_photos.php');
+                const data = await response.json();
+                if (lastHash && data.hash !== lastHash) {
+                    location.reload();
+                } else {
+                    lastHash = data.hash;
+                }
+            } catch (err) {
+                console.error('Update gagal:', err);
+            }
+        }
+        setInterval(checkForUpdates, 10000);
+        function updatePopupImage() {
+            const img = document.getElementById('popup-image');
+            const downloadLink = document.getElementById('download-link');
+            const zipLink = document.getElementById('zip-link');
+            const popupNumber = document.getElementById('popup-number');
+            const thumbnailList = document.getElementById('thumbnail-list');
+            if (popupNumber) {
+                popupNumber.textContent = (currentIndex + 1) + ' / ' + currentGroup.length;
+            }
+            img.src = 'uploads/' + currentGroup[currentIndex];
+            downloadLink.href = 'uploads/' + currentGroup[currentIndex];
+            downloadLink.setAttribute('download', currentGroup[currentIndex]);
+            zipLink.href = 'download_zip.php?files=' + encodeURIComponent(currentGroup.join(','));
+            thumbnailList.innerHTML = '';
+            selectedForCollage = [];
+            currentGroup.forEach((photo, idx) => {
+                const thumbDiv = document.createElement('div');
+                thumbDiv.classList.add('img-thumbnail');
+                const numberDiv = document.createElement('div');
+                numberDiv.classList.add('thumbnail-number');
+                numberDiv.textContent = idx + 1;
+                const imgThumb = document.createElement('img');
+                imgThumb.src = 'uploads/' + photo;
+                imgThumb.style.cursor = 'pointer';
+                imgThumb.onclick = () => selectForCollage(photo, imgThumb);
+                thumbDiv.appendChild(imgThumb);
+                thumbDiv.appendChild(numberDiv);
+                thumbnailList.appendChild(thumbDiv);
+            });
+        }
+        function selectForCollage(photo, el) {
+            const idx = selectedForCollage.indexOf(photo);
+            if (idx > -1) {
+                selectedForCollage.splice(idx, 1);
+                el.classList.remove('selected');
+            } else if (selectedForCollage.length < 2) {
+                selectedForCollage.push(photo);
+                el.classList.add('selected');
+            }
+            document.getElementById('make-collage-btn').style.display = selectedForCollage.length === 2 ? 'inline-block' : 'none';
+        }
+        function makeCollage() {
+            const url = 'make_collage.php?folder=uploads_unframed&img1=' + encodeURIComponent(selectedForCollage[0]) + '&img2=' + encodeURIComponent(selectedForCollage[1]);
+            fetch(url)
+                .then(res => res.text())
+                .then(imgUrl => {
+                    document.getElementById('collage-popup-container').style.display = 'flex';
+                    document.getElementById('collage-image').src = imgUrl;
+                    document.getElementById('collage-download-link').href = imgUrl;
+                    document.getElementById('collage-download-link').setAttribute('download', imgUrl.split('/').pop());
+                });
+        }
+        function closeCollagePopup() {
+            document.getElementById('collage-popup-container').style.display = 'none';
+            const collageImg = document.getElementById('collage-image').src;
+            const fileName = collageImg.split('/').pop();
+            fetch('delete_collage.php?file=' + encodeURIComponent(fileName))
+                .then(res => res.text())
+                .then(msg => {
+                    console.log('Collage deleted:', msg);
+                });
+        }
+    </script>
+
+    <!-- Tambahan library dan script fitur template -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-animateNumber/0.0.14/jquery.animateNumber.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.stellar/0.6.2/jquery.stellar.min.js"></script>
+    <!-- Integrasi semua fitur JS template -->
+    <script>
+    AOS.init({
+        duration: 800,
+        easing: 'slide',
+        once: true
+    });
+    $(function(){
+        "use strict";
+        $(".loader").delay(0).fadeOut("slow");
+        $("#overlayer").delay(0).fadeOut("slow");
+        // siteMenuClone
+        $('.js-clone-nav').each(function() {
+            var $this = $(this);
+            $this.clone().attr('class', 'site-nav-wrap').appendTo('.site-mobile-menu-body');
+        });
+        setTimeout(function() {
+            var counter = 0;
+            $('.site-mobile-menu .has-children').each(function(){
+                var $this = $(this);
+                $this.prepend('<span class="arrow-collapse collapsed">');
+                $this.find('.arrow-collapse').attr({
+                    'data-toggle' : 'collapse',
+                    'data-target' : '#collapseItem' + counter,
+                });
+                $this.find('> ul').attr({
+                    'class' : 'collapse',
+                    'id' : 'collapseItem' + counter,
+                });
+                counter++;
+            });
+        }, 1000);
+        $('body').on('click', '.arrow-collapse', function(e) {
+            var $this = $(this);
+            if ( $this.closest('li').find('.collapse').hasClass('show') ) {
+                $this.removeClass('active');
+            } else {
+                $this.addClass('active');
+            }
+            e.preventDefault();  
+        });
+        $(window).resize(function() {
+            var $this = $(this), w = $this.width();
+            if ( w > 768 ) {
+                if ( $('body').hasClass('offcanvas-menu') ) {
+                    $('body').removeClass('offcanvas-menu');
+                }
+            }
+        })
+        $('body').on('click', '.js-menu-toggle', function(e) {
+            var $this = $(this);
+            e.preventDefault();
+            if ( $('body').hasClass('offcanvas-menu') ) {
+                $('body').removeClass('offcanvas-menu');
+                $('body').find('.js-menu-toggle').removeClass('active');
+            } else {
+                $('body').addClass('offcanvas-menu');
+                $('body').find('.js-menu-toggle').addClass('active');
+            }
+        }) 
+        $(document).mouseup(function(e) {
+            var container = $(".site-mobile-menu");
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                if ( $('body').hasClass('offcanvas-menu') ) {
+                    $('body').removeClass('offcanvas-menu');
+                    $('body').find('.js-menu-toggle').removeClass('active');
+                }
+            }
+        });
+        // Owl Carousel
+        if ( $('.owl-single').length > 0 ) {
+            var owl = $('.owl-single').owlCarousel({
+                loop: true,
+                autoHeight: true,
+                margin: 0,
+                autoplay: true,
+                smartSpeed: 1000,
+                items: 1,
+                nav: true,
+                navText: ['<span class="icon-keyboard_backspace"></span>','<span class="icon-keyboard_backspace"></span>']
+            });
+            owl.on('initialized.owl.carousel', function() {
+                owl.trigger('refresh.owl.carousel');
+            });
+            $('.custom-owl-next').click(function(e) {
+                e.preventDefault();
+                owl.trigger('next.owl.carousel');
+            })
+            $('.custom-owl-prev').click(function(e) {
+                e.preventDefault();
+                owl.trigger('prev.owl.carousel');
+            })
+        }
+        // Counter
+        $('.count-numbers').waypoint( function( direction ) {
+            if( direction === 'down' && !$(this.element).hasClass('ut-animated') ) {
+                var comma_separator_number_step = $.animateNumber.numberStepFactories.separator(',')
+                $('.counter > span').each(function(){
+                    var $this = $(this), num = $this.data('number');
+                    $this.animateNumber({ number: num, numberStep: comma_separator_number_step }, 10000);
+                });
+            }
+        } , { offset: '95%' } );
+        // Portfolio Masonry
+        $('.filters ul li').click(function(){
+            $('.filters ul li').removeClass('active');
+            $(this).addClass('active');
+            var data = $(this).attr('data-filter');
+            $grid.isotope({ filter: data })
+        });
+        if(document.getElementById("portfolio-section")){
+            var $grid = $(".grid").isotope({
+                itemSelector: ".all",
+                percentPosition: true,
+                masonry: { columnWidth: ".all" }
+            })
+            $grid.imagesLoaded().progress( function() {
+                $grid.isotope('layout');
+            });  
+        };
+        // Search Toggle
+        $('.js-search-toggle').on('click', function() {
+            $('.search-wrap').toggleClass('active');
+            setTimeout(function() { $('#s').focus(); }, 400);
+        })
+        $(document).mouseup(function(e) {
+            var container = $(".search-wrap form");
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                if ( $('.search-wrap').hasClass('active') ) {
+                    $('.search-wrap').removeClass('active');
+                }
+            }
+        }); 
+        // Parallax
+        $(window).stellar({
+            responsive: false,
+            parallaxBackgrounds: true,
+            parallaxElements: true,
+            horizontalScrolling: false,
+            hideDistantElements: false,
+            scrollProperty: 'scroll'
+        });
+        // Pricing Toggle
+        $('.js-period-toggle').on('click', function(e) {
+            var $this = $(this), pricingItem = $('.pricing-item');
+            if ( $('.period-toggle').hasClass('active') ) {
+                $this.removeClass('active');
+                pricingItem.removeClass('yearly');
+            } else {
+                $this.addClass('active');
+                pricingItem.addClass('yearly');
+            }
+            e.preventDefault();
+        })
+    });
     </script>
 </body>
 </html>
